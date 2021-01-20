@@ -34,13 +34,13 @@ public class Main {
 			graph.get(from).add(new Edge(to, w));
 		}
 
-		// // 確認用
-		// for (int v = 0; v < n; v++) {
-		// System.out.println("点" + v);
-		// for (Edge e : graph.get(v)) {
-		// System.out.println("　⇒" + e.w + "⇒点" + e.to);
-		// }
-		// }
+		// 確認用
+		for (int v = 0; v < n; v++) {
+			System.out.println("点" + v);
+			for (Edge e : graph.get(v)) {
+				System.out.println("　⇒" + e.w + "⇒点" + e.to);
+			}
+		}
 
 		// 以下、ベルマンフォード法。始点から各点への最短距離を求める。
 		boolean resultNegativeCycle = false;
