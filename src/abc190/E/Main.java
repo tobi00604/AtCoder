@@ -1,68 +1,72 @@
-package arc111.B;
+package abc190.E;
 
 import java.util.*;
 
-// 解説ページにもあるとおり、グラフが木かそうでないか、を判定する問題。
-// 2021/01/09　全域木を作るときに不要な枝があるか、で判定しようとしてなぜかバグって失敗。いつか再挑戦したい。
-// 2021/01/20　DFSを走らせて閉路を見つけたか、で判定して無事AC。
-// 2021/01/26　木の性質 "辺の数＋１＝点の数" が成り立つか、で判定する方針を以下にて試してみる。
-public class Main3 {
+public class Main {
+
+	static List<List<Integer>> graph; // グラフ
+	static boolean[] asi; // dfsの足跡
 
 	public static void main(String[] args) {
 
 		// 入力
 		Scanner sc = new Scanner(System.in);
 		int n = Integer.parseInt(sc.next());
-		int maxColor = 400001;
-		int[] a = new int[n];
-		int[] b = new int[n];
-		for (int i = 0; i < n; i++) {
+		int m = Integer.parseInt(sc.next());
+		int[] a = new int[m];
+		int[] b = new int[m];
+		for (int i = 0; i < m; i++) {
 			a[i] = Integer.parseInt(sc.next());
 			b[i] = Integer.parseInt(sc.next());
 		}
+		int k = Integer.parseInt(sc.next());
+		int[] c = new int[k];
+		for (int i = 0; i < k; i++) {
+			c[i] = Integer.parseInt(sc.next());
+		}
 
-		// Union-Findを作る
-		UnionFindTree uf = new UnionFindTree(maxColor);
-		for (int i = 0; i < n; i++) {
+		// とりあえず答えが-1かどうかを判定
+		UnionFindTree uf = new UnionFindTree(n + 1);
+		for (int i = 0; i < m; i++) {
 			uf.unite(a[i], b[i]);
 		}
-
-		// n枚のカードを再び見て、辺の数を調べる
-		int[] hen = new int[maxColor];
-		for (int i = 0; i < n; i++) {
-			hen[uf.root(a[i])]++;
-		}
-
-		// 確認用（maxColor個の値が並ぶので注意）
-//		System.out.println(Arrays.toString(hen));
-//		uf.printAllNode();
-
-		// 答えを出す
-		int result = 0;
-		boolean[] used = new boolean[maxColor];
-		for (int v = 0; v < maxColor; v++) {
-
-			// もう見終わった連結成分ならばスキップ
-			if (used[uf.root(v)] == true) {
-				continue;
-			}
-
-			// 問題に登場しない色はスキップ
-			if (hen[v] == 0) {
-				continue;
-			}
-
-			used[uf.root(v)] = true;
-
-			// 点vを含む連結成分は "辺の数＋１＝点の数" が成り立つか？
-			if (hen[v] + 1 == uf.getSize(v)) {
-				result += hen[v]; // 辺の数がスコア
-			} else {
-				result += uf.getSize(v); // 点の数がスコア
+		for (int i = 0 + 1; i < k; i++) {
+			if (!uf.isSame(c[i - 1], c[i])) {
+				System.out.println(-1);
+				return;
 			}
 		}
+		
+		// 無向グラフを作る
+		graph = new ArrayList<List<Integer>>();
+		for (int v = 0; v < n; v++) {
+			graph.add(new ArrayList<Integer>());
+		}
+		for (int e = 0; e < m; e++) {
+			int from = Integer.parseInt(sc.next()); // 始点
+			int to = Integer.parseInt(sc.next()); // 終点
+			graph.get(from).add(to);
+			graph.get(to).add(from); // 無向グラフで逆向きもある
+		}
+		
+		// BFSで石列の長さを求める。
+		// ※すべてのスタート地点（k通り）やる必要がある
+		// ※すべての目的地をひととおり踏んだらBFSを中断していい
+		// ※行きがけと帰りがけの両方にコストがかかることに注意
+		for(int start = 1; start <= k; start++){
+			// ここで時間切れ
+		}
 
-		System.out.println(result);
+	}
+
+	static void dfs(int v) {
+		asi[v] = true;
+		for (int e : graph.get(v)) {
+			int next = e; // 次の点
+			if (asi[next] == false) {
+				dfs(next);
+			}
+		}
 	}
 
 	static class UnionFindTree {
