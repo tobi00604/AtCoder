@@ -2,7 +2,7 @@ package abc146.C;
 
 import java.util.*;
 
-// “ñ•ª’Tõ‚Ì—ûKB
+//“ñ•ª’Tõ‚Ì—ûKB
 public class Main {
 
 	public static void main(String[] args) {
@@ -27,7 +27,7 @@ public class Main {
 			int mid = (right + left) / 2;
 			long nedan = mid * a + (new Integer(mid)).toString().length() * b;
 
-			//System.out.println(left + "_" + mid + "_" + right + " " + nedan);
+			// System.out.println(left + "_" + mid + "_" + right + " " + nedan);
 
 			// ”ƒ‚¦‚é‚©”»’è
 			if (nedan <= x) {
