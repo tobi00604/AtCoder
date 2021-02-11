@@ -6,8 +6,8 @@ import java.util.*;
 
 // しゃくとり法をちゃんと作ったのにさっきの提出はTLEになった。
 // ArrayListが重いのかも？そこでHashSet（順序は覚えないし重複は入らない集合）で代用してみる。
-// 余談１：HashSetで順序を覚えたい場合はLinkedHashSetを使うといいらしいけど処理遅くならないかな。
-// 余談２：https://java-reference.com/java_collection_compare.html
+// なお、HashSetで順序を覚えたい場合はLinkedHashSetを使うといい。処理は遅くなるが気にならないレベル。
+// 余談：https://java-reference.com/java_collection_compare.html
 public class Main {
 
 	public static void main(String[] args) {
