@@ -36,7 +36,7 @@ public class Main2 {
 				for (int j = i + 1; j < n; j++) {
 					if (b[j] && a[j] % a[i] == 0) {
 						b[j] = false;
-						// System.out.println(a[j] + " ‚Í" + a[i] + "‚É‚æ‚èœŠO");
+						System.out.println(a[j] + " ‚Í" + a[i] + "‚É‚æ‚èœŠO");
 					}
 				}
 			}
