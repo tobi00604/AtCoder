@@ -2,17 +2,19 @@ package abc188.E;
 
 import java.util.*;
 
-// コーディング中で時間切れ。
-// DFSで儲けの最大値を探すのだと思うが、
-// DFSの計算量がO(V+E)、旅のスタート地点がO(n)、合計O(n(V+E))
-// となって間に合わない気がする。
-// そこで、旅の途中で訪れた点で金を買った場合も同時進行で調査することで
-// 「さっき通った点からまた旅をリスタート」しなくて済むようにするとか？
+// 入出力例すらACにならないが、自分なりの到達点として提出。
+
+// kane[v] := 点vで金塊を売ったときの値段
+// from[v] := 点vに到達可能な金塊のうち、最も安い金塊の出身地
+// を作れば、kane[v]-kane[from[v]] の最大値が答えになるのでは？
+// …と思って以下実装したが、金塊を買った町ですぐ売ることができてしまいWAになる。
+
 public class Main2 {
 
 	static List<List<Integer>> graph; // グラフ
-	static long mouke = -1;
 	static boolean[] asi;
+	static int[] kane;
+	static int[] from;
 
 	public static void main(String[] args) {
 
@@ -20,38 +22,62 @@ public class Main2 {
 		Scanner sc = new Scanner(System.in);
 		int n = Integer.parseInt(sc.next()); // 点の数
 		int m = Integer.parseInt(sc.next()); // 辺の数
-
-		long[] kane = new long[n]; // 金の価値
+		asi = new boolean[n];
+		kane = new int[n];
+		from = new int[n];
 		for (int v = 0; v < n; v++) {
-			kane[v] = Long.parseLong(sc.next());
+			asi[v] = false;
+			kane[v] = Integer.parseInt(sc.next());
+			from[v] = -1;
 		}
-
 		graph = new ArrayList<List<Integer>>();
 		for (int v = 0; v < n; v++) {
 			graph.add(new ArrayList<Integer>());
 		}
 		for (int e = 0; e < m; e++) {
-			int from = Integer.parseInt(sc.next()) - 1; // 始点
-			int to = Integer.parseInt(sc.next()) - 1; // 終点
-			graph.get(from).add(to);
+			int a = Integer.parseInt(sc.next()) - 1; // 始点
+			int b = Integer.parseInt(sc.next()) - 1; // 終点
+			graph.get(a).add(b);
 		}
 
-		// 確認用
+		// DFS
 		for (int v = 0; v < n; v++) {
-			System.out.println("点" + (v + 1));
-			for (int e : graph.get(v)) {
-				System.out.println("　⇒点" + (e + 1));
+			if (!asi[v]) {
+				dfs(v, v);
 			}
 		}
 
+//		// kaneの確認用
+//		for (int v = 0; v < n; v++) {
+//			System.out.println("点" + (v + 1) + "[" + kane[v] + "]");
+//			for (int e : graph.get(v)) {
+//				System.out.println("　⇒点" + (e + 1) + "[" + kane[e] + "]");
+//			}
+//		}
+//		System.out.println();
+//
+//		// lowの確認用
+//		for (int v = 0; v < n; v++) {
+//			System.out.println("点" + (v + 1) + "：" + (from[v] + 1));
+//		}
+//		System.out.println();
+
+		// 答え
+		int result = 0;
+		for (int v = 0; v < n; v++) {
+			result = Math.max(result, kane[v] - kane[from[v]]);
+		}
+		System.out.println(result);
 	}
 
-	static void dfs(int v) {
+	static void dfs(int v, int f) {
 		asi[v] = true;
+		from[v] = (kane[f] < kane[v]) ? f : v;
 		for (int e : graph.get(v)) {
-			if (asi[e] == false) {
-				dfs(e);
+			if (!asi[e]) {
+				dfs(e, from[v]);
 			}
 		}
 	}
+
 }
