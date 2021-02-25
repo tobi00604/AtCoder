@@ -19,5 +19,16 @@ public class Main {
 			b[i] = Long.parseLong(sc.next());
 		}
 
+		// '.'‚Æ'#'‚Ì”Õ–Ê“ü—Í
+		int h = Integer.parseInt(sc.next());
+		int w = Integer.parseInt(sc.next());
+		boolean[][] f = new boolean[h][w];
+		for (int i = 0; i < h; i++) {
+			String str = sc.next();
+			for (int j = 0; j < w; j++) {
+				f[i][j] = (str.charAt(j) == '.') ? true : false;
+			}
+		}
+
 	}
 }
